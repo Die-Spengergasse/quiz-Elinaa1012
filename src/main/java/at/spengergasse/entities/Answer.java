@@ -1,6 +1,7 @@
 package at.spengergasse.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name ="a_answer")
@@ -14,6 +15,9 @@ public class Answer {
     private boolean correct;
     @Column (name ="a_text")
     private String text;
+    @ManyToOne
+    @JoinColumn (name = "fk_q_id", nullable = false)
+    private Question question;
 
     @Override
     public String toString() {
@@ -38,5 +42,13 @@ public class Answer {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question){
+        this.question = question;
     }
 }

@@ -15,9 +15,11 @@ public class Question {
     @Column (name="q_text")
     private String text;
 
-    @OneToMany //eine 1 zu n Beziehung
-    @JoinColumn(name = "fk_q_id") //verbinde mit Answer-Tabelle
-    private List<Answer> answerList = new ArrayList<>();
+    @OneToMany(mappedBy= "question", cascade = CascadeType.ALL)
+    //@JoinColumn(name = "fk_q_id")
+    //CascadeType.ALL -> Wenn eine Frage gelöscht
+    // wird werden die Antworten auch gelöscht
+    private List<Answer> answers = new ArrayList<>();
 
 
     @Override
@@ -38,5 +40,13 @@ public class Question {
 
     public int getId() {
         return id;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 }
