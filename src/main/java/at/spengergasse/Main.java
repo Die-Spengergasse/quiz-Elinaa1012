@@ -13,30 +13,64 @@ public class Main {
         EntityManager em = Persistence.createEntityManagerFactory("demo")
                 .createEntityManager();
 
-        Question q1 = em.find(Question.class, 1);
 
+        //Questions hat schon die Antworten
+        // daher muss man sie nicht extra mit set Methode speichern
         Scanner scanner = new Scanner(System.in);
 
         TypedQuery<Question> queryQue = em.createQuery("SELECT q from Question q", Question.class);
         List<Question> questions = queryQue.getResultList();
 
-        Question answers = new Question();
-        answers.setAnswers(answers.getAnswers());
+        char[] answerChar = new char[4];
+        answerChar = new char[]{'a', 'b', 'c', 'd'};
 
-        System.out.println("___________Fragen beantworten___________");
+        System.out.println("___________Quiz___________");
 
         BenutzerAntworten benutzer = new BenutzerAntworten();
+        String eingabe = benutzer.getAntwort();
         String selection = "Selection: ";
         String correct = "Correct: ";
-//
-        for (int i = 0; i < questions.size(); i++) {
 
-            System.out.println(questions.get(0).getText());
+
+
+        for (Question q : questions) {
+
+            String richtigeAntwort = " ";
+            List<Answer> answers = q.getAnswers();
+            System.out.println(q.getText());
             System.out.println(selection);
+            for (int i = 0; i < q.getAnswers().size(); i++) {
+                System.out.println(answerChar[i] + ") " + answers.get(i).getText());
+                if (answers.get(i).isCorrect()) {
+                    richtigeAntwort = String.valueOf(answerChar[i]);
+                    correct += richtigeAntwort + ") " + answers.get(i).getText();
+                }
+                //isCorrect = false oder true für jede Antwort
+            }
 
+            boolean korrekteEingabe = false;
+            while (!korrekteEingabe) {
+                System.out.print("Your Answer: ");
+                eingabe = (scanner.next());
+                if (!eingabe.matches("[a-d]")) {
+                    System.out.println("Bitte nur a - d eingeben!");
+                }
+                else
+                {
+                    korrekteEingabe = true;
+                }
+            }
+            if (!eingabe.equals(richtigeAntwort)) {
+                System.out.println(correct);
+                System.out.println("\n--next Question--");
+            }
+            else
+            {
+                System.out.println("\n--next Question--");
+            }
+            correct = "Correct: ";
 
         }
-
         em.close();
     }
 }
