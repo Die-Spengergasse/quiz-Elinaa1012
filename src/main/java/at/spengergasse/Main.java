@@ -15,8 +15,9 @@ public class Main {
 
 
         //Questions hat schon die Antworten
-        // daher muss man sie nicht extra mit set Methode speichern
+        //daher muss man sie nicht extra mit set Methode speichern
         Scanner scanner = new Scanner(System.in);
+        int anzahlRichtig = 0;
 
         TypedQuery<Question> queryQue = em.createQuery("SELECT q from Question q", Question.class);
         List<Question> questions = queryQue.getResultList();
@@ -53,24 +54,28 @@ public class Main {
                 System.out.print("Your Answer: ");
                 eingabe = (scanner.next());
                 if (!eingabe.matches("[a-d]")) {
-                    System.out.println("Bitte nur a - d eingeben!");
+                    System.out.println("Please only select from a - d!");
                 }
                 else
                 {
                     korrekteEingabe = true;
+                    System.out.println(correct + "\n");
                 }
+
+
             }
-            if (!eingabe.equals(richtigeAntwort)) {
-                System.out.println(correct);
-                System.out.println("\n--next Question--");
+
+
+            if (eingabe.equals(richtigeAntwort)) {
+                anzahlRichtig++;
             }
-            else
-            {
-                System.out.println("\n--next Question--");
-            }
+            benutzer.setProzentSatz((float)(anzahlRichtig * 100) / questions.size());
             correct = "Correct: ";
 
         }
         em.close();
+
+        System.out.println("Number of correct answers: " + anzahlRichtig
+                + " -> " + benutzer.getProzentSatz() +"%");
     }
 }

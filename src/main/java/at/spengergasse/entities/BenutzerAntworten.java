@@ -3,6 +3,7 @@ package at.spengergasse.entities;
 public class BenutzerAntworten {
 
     private String antwort;
+    private float prozentSatz;
 
     public BenutzerAntworten() {
 
@@ -14,5 +15,13 @@ public class BenutzerAntworten {
 
     public void setAntwort(String antwort) {
         this.antwort = antwort;
+    }
+
+    public float getProzentSatz() {
+        return prozentSatz;
+    }
+
+    public void setProzentSatz(float prozentSatz) {
+        this.prozentSatz = prozentSatz;
     }
 }
